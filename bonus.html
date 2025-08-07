@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>البونص</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <script defer>
+    function loadBonuses() {
+      const list = document.getElementById('bonus-list');
+      list.innerHTML = '';
+      const bonuses = JSON.parse(localStorage.getItem('bonuses') || '[]');
+      bonuses.forEach(b => {
+        const li = document.createElement('li');
+        li.textContent = `${b.name} (${b.job}): ${b.bonus}`;
+        list.appendChild(li);
+      });
+    }
+    function addBonus(evt) {
+      evt.preventDefault();
+      const name = document.getElementById('name').value;
+      const job = document.getElementById('job').value;
+      const salary = parseFloat(document.getElementById('salary').value) || 0;
+      const bonusAmount = salary * 0.1;
+      const bonuses = JSON.parse(localStorage.getItem('bonuses') || '[]');
+      bonuses.push({name, job, bonus: bonusAmount});
+      localStorage.setItem('bonuses', JSON.stringify(bonuses));
+      loadBonuses();
+      evt.target.reset();
+    }
+    document.addEventListener('DOMContentLoaded', loadBonuses);
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+  </nav>
+  <h1>البونص</h1>
+  <form onsubmit="addBonus(event)">
+    <label>اسم الموظف: <input id="name" required></label><br>
+    <label>الوظيفة: <input id="job" required></label><br>
+    <label>الراتب: <input id="salary" type="number" step="0.01" required></label><br>
+    <button type="submit">إضافة</button>
+  </form>
+  <ul id="bonus-list"></ul>
+</body>
+</html>
