@@ -4,7 +4,8 @@ This repository contains a simple full-stack AI chatbot application using FastAP
 
 ## Backend
 - FastAPI REST API with SQLite and SQLAlchemy.
-- Placeholder chatbot that echoes user messages.
+- Small rule-based chatbot that replies to common greetings and stores the
+  conversation in a database.
 - Run locally:
   ```bash
   cd backend
@@ -17,7 +18,8 @@ This repository contains a simple full-stack AI chatbot application using FastAP
 
 ## Frontend
 - React application built with Vite.
-- Communicates with backend via `/api` proxy.
+- Fetches existing chat history on load and communicates with backend via
+  `/api` proxy.
 - Development:
   ```bash
   cd frontend

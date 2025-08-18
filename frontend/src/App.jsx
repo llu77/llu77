@@ -1,8 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
+
+  useEffect(() => {
+    const loadHistory = async () => {
+      const res = await fetch('/api/history')
+      const data = await res.json()
+      setMessages(data.map(m => ({ role: m.role, text: m.content })))
+    }
+    loadHistory()
+  }, [])
 
   const sendMessage = async () => {
     if (!input.trim()) return
@@ -12,8 +21,8 @@ function App() {
       body: JSON.stringify({ message: input })
     })
     const data = await res.json()
-    setMessages([
-      ...messages,
+    setMessages(prev => [
+      ...prev,
       { role: 'user', text: input },
       { role: 'bot', text: data.reply }
     ])
