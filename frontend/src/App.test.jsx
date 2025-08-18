@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import App from './App'
 
@@ -22,5 +22,25 @@ describe('App', () => {
     expect(items[0].textContent).toContain('hi')
     expect(items[1].textContent).toContain('bot')
     expect(items[1].textContent).toContain('hello')
+  })
+
+  it('sends teach requests', async () => {
+    render(<App />)
+    fireEvent.change(screen.getAllByPlaceholderText(/trigger/i)[0], {
+      target: { value: 'ping' }
+    })
+    fireEvent.change(screen.getAllByPlaceholderText(/response/i)[0], {
+      target: { value: 'pong' }
+    })
+    fireEvent.click(screen.getAllByRole('button', { name: /teach/i })[0])
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        '/api/teach',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({ trigger: 'ping', response: 'pong' })
+        })
+      )
+    })
   })
 })

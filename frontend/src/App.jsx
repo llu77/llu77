@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 function App() {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
+  const [trigger, setTrigger] = useState('')
+  const [response, setResponse] = useState('')
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -29,6 +31,17 @@ function App() {
     setInput('')
   }
 
+  const teach = async () => {
+    if (!trigger.trim() || !response.trim()) return
+    await fetch('/api/teach', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ trigger, response })
+    })
+    setTrigger('')
+    setResponse('')
+  }
+
   return (
     <div>
       <ul>
@@ -40,6 +53,20 @@ function App() {
       </ul>
       <input value={input} onChange={(e) => setInput(e.target.value)} />
       <button onClick={sendMessage}>Send</button>
+      <div>
+        <h3>Teach the bot</h3>
+        <input
+          placeholder="Trigger"
+          value={trigger}
+          onChange={(e) => setTrigger(e.target.value)}
+        />
+        <input
+          placeholder="Response"
+          value={response}
+          onChange={(e) => setResponse(e.target.value)}
+        />
+        <button onClick={teach}>Teach</button>
+      </div>
     </div>
   )
 }

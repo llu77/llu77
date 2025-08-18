@@ -23,3 +23,11 @@ def test_history_endpoint():
     assert len(data) >= 4  # user+bot for each chat
     assert data[0]["role"] == "user"
     assert data[1]["role"] == "bot"
+
+
+def test_teach_and_use():
+    teach = client.post("/teach", json={"trigger": "who are you", "response": "I am a bot"})
+    assert teach.status_code == 200
+    chat = client.post("/chat", json={"message": "Who are you?"})
+    assert chat.status_code == 200
+    assert chat.json()["reply"] == "I am a bot"

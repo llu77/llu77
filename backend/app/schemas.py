@@ -14,3 +14,16 @@ class Message(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class KnowledgeCreate(BaseModel):
+    trigger: str
+    response: str
+
+
+class Knowledge(KnowledgeCreate):
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True

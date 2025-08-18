@@ -19,9 +19,14 @@ def get_db():
 @app.post("/chat")
 def chat(req: schemas.MessageCreate, db: Session = Depends(get_db)):
     crud.create_message(db, role="user", content=req.message)
-    reply = chatbot.generate_response(req.message)
+    reply = chatbot.generate_response(req.message, db)
     crud.create_message(db, role="bot", content=reply)
     return {"reply": reply}
+
+
+@app.post("/teach", response_model=schemas.Knowledge)
+def teach(req: schemas.KnowledgeCreate, db: Session = Depends(get_db)):
+    return crud.create_knowledge(db, trigger=req.trigger, response=req.response)
 
 
 @app.get("/history", response_model=list[schemas.Message])

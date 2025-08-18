@@ -6,6 +6,8 @@ This repository contains a simple full-stack AI chatbot application using FastAP
 - FastAPI REST API with SQLite and SQLAlchemy.
 - Small rule-based chatbot that replies to common greetings and stores the
   conversation in a database.
+- `/teach` endpoint allows adding new trigger/response pairs at runtime for
+  lightweight, continuous learning.
 - Run locally:
   ```bash
   cd backend
@@ -20,6 +22,7 @@ This repository contains a simple full-stack AI chatbot application using FastAP
 - React application built with Vite.
 - Fetches existing chat history on load and communicates with backend via
   `/api` proxy.
+- Simple form lets users teach the bot new responses without retraining.
 - Development:
   ```bash
   cd frontend
