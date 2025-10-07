@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>الإعدادات</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <script defer>
+    function saveSettings(evt) {
+      evt.preventDefault();
+      const theme = document.querySelector('input[name="theme"]:checked').value;
+      localStorage.setItem('theme', theme);
+      applyTheme();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const current = localStorage.getItem('theme') || 'light';
+      document.getElementById(`theme-${current}`).checked = true;
+    });
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+  </nav>
+  <h1>الإعدادات</h1>
+  <form onsubmit="saveSettings(event)">
+    <p>اختر النمط:</p>
+    <label><input type="radio" id="theme-light" name="theme" value="light"> فاتح</label><br>
+    <label><input type="radio" id="theme-dark" name="theme" value="dark"> داكن</label><br>
+    <button type="submit">حفظ</button>
+  </form>
+</body>
+</html>
